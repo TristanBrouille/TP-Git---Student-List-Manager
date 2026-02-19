@@ -55,41 +55,6 @@ public class Main {
                         System.out.println("No student found with id '" + parts[1] + "'.");
                     }
                     break;
-
-                case "export":
-                    if (parts.length < 3) {
-                        System.out.println("Usage: export <format> <file_path>");
-                        break;
-                    }
-                    // parts[2] contient le reste apres le format grace au split(..., 3)
-                    String format = parts[1].toLowerCase();
-                    // On re-split parts[2] pour isoler le chemin
-                    String filePath = parts[2].trim();
-                    try {
-                        if ("csv".equals(format)) {
-                            service.exportStudentsCsv(filePath);
-                            System.out.println("Students exported to CSV file '" + filePath + "'.");
-                        } else if ("json".equals(format)) {
-                            service.exportStudentsJson(filePath);
-                            System.out.println("Students exported to JSON file '" + filePath + "'.");
-                        } else {
-                            System.out.println("Unsupported format. Use 'csv' or 'json'.");
-                        }
-                    } catch (IOException e) {
-                        System.out.println("Error exporting: " + e.getMessage());
-                    }
-                    break;
-
-                case "quit":
-                case "exit":
-                    System.out.println("Bye.");
-                    scanner.close();
-                    return;
-
-                default:
-                    System.out.println("Unknown command.");
-                    printHelp();
-                    break;
             }
         }
     }
