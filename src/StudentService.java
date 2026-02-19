@@ -16,13 +16,7 @@ public class StudentService {
      * Prints all students to stdout.
      */
     public void printList() {
-        if (students.isEmpty()) {
-            System.out.println("No students found.");
-            return;
-        }
-        System.out.println("Students:");
-        for (Student student : students) {
-            System.out.println("- " + student);
+
         }
     }
 
@@ -34,11 +28,7 @@ public class StudentService {
      * @return true if the student was added, false if the id already exists
      */
     public boolean addStudent(String studentId, String name) {
-        if (findById(studentId) != null) {
-            return false;
-        }
-        students.add(new Student(studentId, name));
-        return true;
+        return false;
     }
 
     /**
@@ -48,12 +38,7 @@ public class StudentService {
      * @return true if the student was found and removed, false otherwise
      */
     public boolean removeStudent(String studentId) {
-        Student student = findById(studentId);
-        if (student == null) {
-            return false;
-        }
-        students.remove(student);
-        return true;
+        return false;
     }
 
     /**
