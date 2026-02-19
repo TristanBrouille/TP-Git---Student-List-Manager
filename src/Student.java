@@ -3,16 +3,16 @@
  */
 public class Student {
 
-    private final String studentId;
+    private final String id;
     private final String name;
 
     public Student(String studentId, String name) {
-        this.studentId = studentId;
+        this.id = studentId;
         this.name = name;
     }
 
-    public String getStudentId() {
-        return studentId;
+    public String getId() {
+        return id;
     }
 
     public String getName() {
@@ -21,6 +21,6 @@ public class Student {
 
     @Override
     public String toString() {
-        return studentId + ": " + name;
+        return id + ": " + name;
     }
 }

@@ -66,7 +66,7 @@ public class StudentService {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
             writer.println("id,name");
             for (Student student : students) {
-                writer.println(student.getStudentId() + "," + student.getName());
+                writer.println(student.getId() + "," + student.getName());
             }
         }
     }
@@ -82,7 +82,7 @@ public class StudentService {
             writer.println("[");
             for (int i = 0; i < students.size(); i++) {
                 Student s = students.get(i);
-                writer.print("  { \"id\": \"" + s.getStudentId()
+                writer.print("  { \"id\": \"" + s.getId()
                         + "\", \"name\": \"" + s.getName() + "\" }");
                 if (i < students.size() - 1) {
                     writer.println(",");
@@ -102,7 +102,7 @@ public class StudentService {
      */
     private Student findById(String studentId) {
         for (Student student : students) {
-            if (student.getStudentId().equals(studentId)) {
+            if (student.getId().equals(studentId)) {
                 return student;
             }
         }
