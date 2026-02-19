@@ -4,17 +4,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Service layer for student management operations.
- * Handles in-memory student operations (list, add, remove, export).
- */
 public class StudentService {
 
     private final List<Student> students = new ArrayList<>();
 
-    /**
-     * Prints all students to stdout.
-     */
     public void printList() {
         if (students.isEmpty()) {
             System.out.println("No students found.");
@@ -26,13 +19,6 @@ public class StudentService {
         }
     }
 
-    /**
-     * Adds a student if the id is unique.
-     *
-     * @param studentId unique identifier for the student
-     * @param name      student display name
-     * @return true if the student was added, false if the id already exists
-     */
     public boolean addStudent(String studentId, String name) {
         if (findById(studentId) != null) {
             return false;
@@ -41,12 +27,6 @@ public class StudentService {
         return true;
     }
 
-    /**
-     * Removes a student by id.
-     *
-     * @param studentId id of the student to remove
-     * @return true if the student was found and removed, false otherwise
-     */
     public boolean removeStudent(String studentId) {
         Student std = findById(studentId);
         if (std != null){
@@ -54,6 +34,23 @@ public class StudentService {
             return true;
         }
         return false;
+    }
+
+    public void exportStudentsJson(String filePath) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+            writer.println("[");
+            for (int i = 0; i < students.size(); i++) {
+                Student s = students.get(i);
+                writer.print("  { \"id\": \"" + s.getId()
+                        + "\", \"name\": \"" + s.getName() + "\" }");
+                if (i < students.size() - 1) {
+                    writer.println(",");
+                } else {
+                    writer.println();
+                }
+            }
+            writer.println("]");
+        }
     }
 
     private Student findById(String studentId) {
