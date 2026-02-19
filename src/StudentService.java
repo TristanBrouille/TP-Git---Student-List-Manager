@@ -56,6 +56,15 @@ public class StudentService {
         return false;
     }
 
+    public void exportStudentsCsv(String filePath) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+            writer.println("id,name");
+            for (Student student : students) {
+                writer.println(student.getId() + "," + student.getName());
+            }
+        }
+    }
+
     private Student findById(String studentId) {
         for (Student student : students) {
             if (student.getId().equals(studentId)) {
