@@ -1,13 +1,106 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    IO.println(String.format("Hello and welcome!"));
+import java.io.IOException;
+import java.util.Scanner;
 
-    for (int i = 1; i <= 5; i++) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        IO.println("i = " + i);
+/**
+ * Command-line interface for the student manager application.
+ */
+public class Main {
+
+    public static void main(String[] args) {
+        StudentService service = new StudentService();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Student List Manager");
+        System.out.println("Type 'help' to show commands.");
+
+        while (true) {
+            System.out.print("> ");
+            String line = scanner.nextLine().trim();
+            if (line.isEmpty()) {
+                continue;
+            }
+
+            String[] parts = line.split("\\s+", 3);
+            String command = parts[0].toLowerCase();
+
+            switch (command) {
+                case "help":
+                    printHelp();
+                    break;
+
+                case "list":
+                    service.printList();
+                    break;
+
+                case "add":
+                    if (parts.length < 3) {
+                        System.out.println("Usage: add <id> <name>");
+                        break;
+                    }
+                    if (service.addStudent(parts[1], parts[2])) {
+                        System.out.println("Student '" + parts[2] + "' added.");
+                    } else {
+                        System.out.println("A student with id '" + parts[1] + "' already exists.");
+                    }
+                    break;
+
+                case "remove":
+                    if (parts.length < 2) {
+                        System.out.println("Usage: remove <id>");
+                        break;
+                    }
+                    if (service.removeStudent(parts[1])) {
+                        System.out.println("Student with id '" + parts[1] + "' removed.");
+                    } else {
+                        System.out.println("No student found with id '" + parts[1] + "'.");
+                    }
+                    break;
+
+                case "export":
+                    if (parts.length < 3) {
+                        System.out.println("Usage: export <format> <file_path>");
+                        break;
+                    }
+                    // parts[2] contient le reste apres le format grace au split(..., 3)
+                    String format = parts[1].toLowerCase();
+                    // On re-split parts[2] pour isoler le chemin
+                    String filePath = parts[2].trim();
+                    try {
+                        if ("csv".equals(format)) {
+                            service.exportStudentsCsv(filePath);
+                            System.out.println("Students exported to CSV file '" + filePath + "'.");
+                        } else if ("json".equals(format)) {
+                            service.exportStudentsJson(filePath);
+                            System.out.println("Students exported to JSON file '" + filePath + "'.");
+                        } else {
+                            System.out.println("Unsupported format. Use 'csv' or 'json'.");
+                        }
+                    } catch (IOException e) {
+                        System.out.println("Error exporting: " + e.getMessage());
+                    }
+                    break;
+
+                case "quit":
+                case "exit":
+                    System.out.println("Bye.");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Unknown command.");
+                    printHelp();
+                    break;
+            }
+        }
+    }
+
+    private static void printHelp() {
+        System.out.println("Available commands:");
+        System.out.println("  list");
+        System.out.println("  add <id> <name>");
+        System.out.println("  remove <id>");
+        System.out.println("  export <format> <file_path>  (formats: csv, json)");
+        System.out.println("  help");
+        System.out.println("  quit");
     }
 }
